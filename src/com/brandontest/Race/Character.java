@@ -4,11 +4,12 @@ import com.brandontest.Secondary.*;
 import com.brandontest.Weapons.Weapon;
 
 import java.util.*;
+import java.util.Collections;
 
 /**
  * Created by Kathy on 12/22/2016.
  */
-public abstract class Character
+public abstract class Character implements Comparable<Character>
 {
 
     public static enum Team
@@ -55,6 +56,27 @@ public abstract class Character
     }
 
     public static ArrayList<Character> characterList = new ArrayList<Character>();
+
+    //Issue with this part here
+    @Override
+    public int compareTo(Character order)
+    {
+        if (this.attribute.getHaste() < order.attribute.getHaste())
+            return -1;
+        else
+            return 1;
+    }
+
+    //Another solution?
+    static final Comparator<Character> sortingOrder = new Comparator<Character>() {
+        @Override
+        public int compare(Character o1, Character o2) {
+            if (o1.attribute.getHaste() < o2.attribute.getHaste())
+                return -1;
+            else
+                return 1;
+        }
+    };
 
     //Composition of other classes
     JobType jobtype;
@@ -216,7 +238,7 @@ public abstract class Character
     {
         updateValue();
         findingHealth();
-        System.out.println(name + " Attributes :");
+        System.out.println(name + " Attributes:");
         System.out.println("Strength: " + attribute.getStrength());
         System.out.println("Intellect: " + attribute.getIntellect());
         System.out.println("Agility: " + attribute.getAgility());
@@ -253,6 +275,8 @@ public abstract class Character
         System.out.println("The strength before passing to the move is: " + attribute.getStrength());
         testMoves(target);
     }
+
+
     /**public static void raceGenerator(String name, Race raceComposition)
     {
         switch(raceComposition)
