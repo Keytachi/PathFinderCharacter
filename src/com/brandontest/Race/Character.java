@@ -4,12 +4,11 @@ import com.brandontest.Secondary.*;
 import com.brandontest.Weapons.Weapon;
 
 import java.util.*;
-import java.util.Collections;
 
 /**
  * Created by Kathy on 12/22/2016.
  */
-public abstract class Character implements Comparable<Character>
+public abstract class Character
 {
 
     public static enum Team
@@ -54,29 +53,16 @@ public abstract class Character implements Comparable<Character>
             return VALUES[RANDOM.nextInt(SIZE)];
         }
     }
+    /**public enum Choice
+    {
+        ATTACK,
+        SPELL,
+        INVENTORY,
+        RUN;
+    }*/
 
     public static ArrayList<Character> characterList = new ArrayList<Character>();
 
-    //Issue with this part here
-    @Override
-    public int compareTo(Character order)
-    {
-        if (this.attribute.getHaste() < order.attribute.getHaste())
-            return -1;
-        else
-            return 1;
-    }
-
-    //Another solution?
-    static final Comparator<Character> sortingOrder = new Comparator<Character>() {
-        @Override
-        public int compare(Character o1, Character o2) {
-            if (o1.attribute.getHaste() < o2.attribute.getHaste())
-                return -1;
-            else
-                return 1;
-        }
-    };
 
     //Composition of other classes
     JobType jobtype;
@@ -89,6 +75,7 @@ public abstract class Character implements Comparable<Character>
     protected Role role;
     protected String race;
     protected Race raceComposition;
+    //protected Choice choice; - Testing for choices
 
     //Private parameters for the Character class
     private String name;
@@ -218,7 +205,7 @@ public abstract class Character implements Comparable<Character>
     public Race getRaceComposition(){return raceComposition;}
 
     //Setter Functions
-    public void setHealth(int health){
+    public void addHealth(int health){
         this.health += health;
     }
 
@@ -263,7 +250,7 @@ public abstract class Character implements Comparable<Character>
     public void findingHealth()         //Adding more health since the base health starts at 100
     {
         int healthValue = attribute.getStamina()*10;
-        setHealth(healthValue);
+        addHealth(healthValue);
         getHealth();
     }
     public void testMoves(Character target) //Testing attack moves
@@ -276,7 +263,31 @@ public abstract class Character implements Comparable<Character>
         testMoves(target);
     }
 
+    public void choices()
+    {
 
+        System.out.println("1. Attack");
+        System.out.println("2. Spell");
+        System.out.println("3. Inventory");
+        System.out.println("4. Run");
+        System.out.println("Choose your move: ");
+
+        Scanner input = new Scanner(System.in);
+        String choice = input.nextLine();
+
+        switch (Integer.parseInt(choice))
+        {
+            case 1:
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+            case 4:
+                break;
+            default:
+        }
+    }
     /**public static void raceGenerator(String name, Race raceComposition)
     {
         switch(raceComposition)

@@ -67,6 +67,7 @@ public class Main {
         for(int i = 0; i < Character.characterList.size(); i++)
         {
             System.out.println(Character.characterList.get(i).getName() + " moves with the haste value of " + Character.characterList.get(i).getAttribute().getHaste());
+            Character.characterList.get(i).choices();
         }
     }
 
