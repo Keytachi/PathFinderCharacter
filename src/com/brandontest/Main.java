@@ -32,20 +32,21 @@ public class Main {
     public static void game()
     {
         createPlayer();
-        for(Character placeHolder : Character.characterList)
-        {
-            placeHolder.announceStats();
-        }
-        descendingOrder();
-        displayOrder();
+        //do {
+            for (Character placeHolder : Character.characterList) {
+                placeHolder.announceStats();
+            }
+            Character.descendingOrder();
+            displayOrder();
+        //}while(gameOver() != false);
 
     }
 
-    public static void createPlayer()
+    public static void createPlayer()   //Generating random character for testing purpose
     {
-        Weapon testWep = new Weapon(new Attribute(0,0,0,0,0,0),2,5,2.6 );
-        int npcGenerate = (int)(Math.random()*10)+1;
-        Character[] characterNumber = new Character[npcGenerate];
+        Weapon testWep = new Weapon(new Attribute(0,0,0,0,0,0),2,5,2.6 );       //Testing Weapon
+        int npcGenerate = (int)(Math.random()*10)+2;                            //From the range of 2-12 since it can randomly only do 1 character at a time.
+        Character[] characterNumber = new Character[npcGenerate];               //Creating an object array using the Character class.
         for(int i = 0; i < npcGenerate; i++)
         {
             characterNumber[i] = new Human(Character.Role.getRandomRole(),testWep,1, "NPC " + (i+1), getRandomTeam(), Character.Type.PLAYER);
@@ -53,7 +54,7 @@ public class Main {
         }
     }
 
-    public static void descendingOrder()
+    /*public static void descendingOrder()
     {
         Collections.sort(Character.characterList, new Comparator<Character>() {
             @Override
@@ -61,13 +62,18 @@ public class Main {
                 return Double.valueOf(o2.getAttribute().getHaste()).compareTo(o1.getAttribute().getHaste());
             }
         });
-    }
+    }*/
+
+    //Display the order that the special sorting function via haste value.
     public static void displayOrder()
     {
         for(int i = 0; i < Character.characterList.size(); i++)
         {
             System.out.println(Character.characterList.get(i).getName() + " moves with the haste value of " + Character.characterList.get(i).getAttribute().getHaste());
-            Character.characterList.get(i).choices();
+            if(Character.characterList.get(i).getPlayable() == Character.Type.PLAYER)                           //Checking to see if the current turn is an NPC or a player.
+            {
+                Character.characterList.get(i).choices();
+            }
         }
     }
 
