@@ -1,6 +1,9 @@
 package com.brandontest.Race;
-import com.brandontest.Jobtype.*;
-import com.brandontest.Secondary.*;
+
+import com.brandontest.Jobtype.JobType;
+import com.brandontest.Jobtype.Paladin;
+import com.brandontest.Jobtype.Warrior;
+import com.brandontest.Secondary.Attribute;
 import com.brandontest.Weapons.Weapon;
 
 import java.util.*;
@@ -13,8 +16,7 @@ public abstract class Character
 
     public static enum Team
     {GOOD,
-     BAD,
-     NEUTRAL;
+     BAD;
 
         private static final Team[] VALUES = values();
         private static final int SIZE = VALUES.length;
@@ -101,12 +103,13 @@ public abstract class Character
         this.playable = playable;
         this.attribute = statsCombine();
 
+
         switch (team)
         {
             case GOOD :
                 break;
-            case NEUTRAL:
-                break;
+            /*case NEUTRAL:
+                break;*/
             case BAD:
                 break;
         }
@@ -149,8 +152,8 @@ public abstract class Character
         {
             case GOOD :
                 break;
-            case NEUTRAL:
-                break;
+            /*case NEUTRAL:
+                break;*/
             case BAD:
                 break;
             default:
@@ -208,6 +211,10 @@ public abstract class Character
     public void addHealth(int health){
         this.health += health;
     }
+    public void subHealth(int health)
+    {
+        this.health -= health;
+    }
 
     //Specialty Functions
     public Attribute statsCombine()     //Adding both JobType and Weapon attribute together
@@ -235,6 +242,7 @@ public abstract class Character
         System.out.println("Health: " + getHealth());
         System.out.println("Team: " + getTeam());
         System.out.println("Role: " + getRole());
+        System.out.println("Type of Player: " + getPlayable());
         System.out.println("\n\n");
 
     }
@@ -259,8 +267,25 @@ public abstract class Character
     }
     public void attack(Character target)    //Function should be a normal attack with the weapon
     {
-        System.out.println("The strength before passing to the move is: " + attribute.getStrength());
-        System.out.println(getName() + " is attacking " + target.getName());
+        int str = (int)(attribute.getStrength() * .68);
+        int min = weapon.getMinDamage();
+        int max = weapon.getMaxDamage();
+
+        int health = target.getHealth();
+
+        int damage = (int) ((Math.random()*(max - min)+min)+str);
+
+        System.out.println(target.getName() + " Health Pool is: " + target.getHealth());
+        System.out.println(getName() + " is attacking "  + target.getName() + " for " + damage + " physical damage.");
+        target.subHealth(damage);
+        if(health <= 0)
+        {
+            System.out.println(target.getName() + " has died");
+            System.out.println(target.getName() + " remaining health is: " + target.getHealth());
+            characterList.remove(target);
+        }
+        else System.out.println(target.getName() + " remaining health is: " + target.getHealth());
+
     }
 
 
@@ -339,4 +364,38 @@ public abstract class Character
             }
         });
     }
+
+    public static boolean checker()
+    {
+        int bad = 0;
+        int good = 0;
+
+        for(int i = 0; i < characterList.size(); i++)
+        {
+            if(characterList.get(i).getTeam() == Team.BAD)
+            {
+                bad++;
+            }
+            if(characterList.get(i).getTeam() == Team.GOOD)
+            {
+                good++;
+            }
+        }
+        if(good == 0 || bad == 0)
+        {
+            return false;
+        }
+        else{
+            return true;
+        }
+    }
+
+    public static void update()
+    {
+        for(int i = 0; i < characterList.size(); i++)
+        {
+            System.out.println(characterList.get(i).getName() + " is still left");
+        }
+    }
+
 }
