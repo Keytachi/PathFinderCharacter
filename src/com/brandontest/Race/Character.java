@@ -11,7 +11,7 @@ import java.util.*;
 public abstract class Character
 {
 
-    public enum Team
+    public static enum Team
     {GOOD,
      BAD,
      NEUTRAL;
@@ -25,9 +25,22 @@ public abstract class Character
             return VALUES[RANDOM.nextInt(SIZE)];
         }
     }
-    public enum Type {PLAYER,NPC}
+    public static enum Type {PLAYER,NPC}
 
-    public enum Role
+    public static enum Race
+    {
+        HUMAN,
+        ELVES;
+
+        private static final Race[] VALUES = values();
+        private static final int SIZE = VALUES.length;
+        private static final Random RANDOM = new Random();
+
+        public static Race getRandomRace(){
+                return VALUES[RANDOM.nextInt(SIZE)];
+        }
+    }
+    public static enum Role
     {
         PALADIN,
         WARRIOR;
@@ -41,17 +54,21 @@ public abstract class Character
         }
     }
 
-    public static ArrayList<Character> characterlist = new ArrayList<Character>();
+    public static ArrayList<Character> characterList = new ArrayList<Character>();
 
+    //Composition of other classes
     JobType jobtype;
     Weapon weapon;
     Attribute attribute;
 
+    //Protected Variables
     protected Team team;
     protected Type playable;
     protected Role role;
     protected String race;
+    protected Race raceComposition;
 
+    //Private parameters for the Character class
     private String name;
     private int health;
     private int level;
@@ -91,7 +108,7 @@ public abstract class Character
             case NPC:
                 break;
         }
-        characterlist.add(this);
+        characterList.add(this);
     }
     //Superclass when trying to generate randomly
     public Character(Role role, Weapon weapon, int level, String name, Team team, Type playable)
@@ -104,6 +121,7 @@ public abstract class Character
         this.team = team;
         this.playable = playable;
         this.role = role;
+        this.raceComposition = getRaceComposition();
 
 
         switch(role)
@@ -138,7 +156,7 @@ public abstract class Character
         }
 
 
-        characterlist.add(this);
+        characterList.add(this);
     }
 
     //Getter Functions
@@ -175,6 +193,7 @@ public abstract class Character
     {
         return attribute;
     }
+    public Race getRaceComposition(){return raceComposition;}
 
     //Setter Functions
     public void setHealth(int health){
@@ -234,5 +253,15 @@ public abstract class Character
         System.out.println("The strength before passing to the move is: " + attribute.getStrength());
         testMoves(target);
     }
-
+    /**public static void raceGenerator(String name, Race raceComposition)
+    {
+        switch(raceComposition)
+        {
+            case HUMAN:
+                //new Human(name);
+                break;
+            case ELVES:
+                System.out.println("I am an elves race");
+        }
+    }*/
 }

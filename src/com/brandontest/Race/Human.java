@@ -19,13 +19,13 @@ public class Human extends Character
         this.critModifier = .05;
     }
 
-    public Human(String name)
+    /**public Human(String name)
     {
         super(Character.Role.getRandomRole(),new Weapon(new Attribute(0,0,0,0,0,0), 2, 12, 2.6),
                                                         1, name,
                                                         Character.Team.getRandomTeam(),
                                                         Character.Type.PLAYER);
-    }
+    }*/
 
     @Override
     public void specialAttribute()

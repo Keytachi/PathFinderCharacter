@@ -1,10 +1,11 @@
 package com.brandontest;
 
-import com.brandontest.Jobtype.*;
-import com.brandontest.Race.*;
 import com.brandontest.Race.Character;
+import com.brandontest.Race.Human;
 import com.brandontest.Secondary.*;
 import com.brandontest.Weapons.*;
+
+import static com.brandontest.Race.Character.Team.getRandomTeam;
 
 public class Main {
 
@@ -19,7 +20,7 @@ public class Main {
         Human playerNPC2 = new Human(new Warrior(), baseWep, 99, "Test NPC", Character.Team.BAD, Character.Type.NPC);
 
 
-        for(Character placeHolder : Character.characterlist)
+        for(Character placeHolder : Character.characterList)
         {
             placeHolder.announceStats();
             placeHolder.attack(playerNPC2);
@@ -29,7 +30,7 @@ public class Main {
     public static void game()
     {
         createPlayer();
-        for(Character placeHolder : Character.characterlist)
+        for(Character placeHolder : Character.characterList)
         {
             placeHolder.announceStats();
         }
@@ -43,8 +44,8 @@ public class Main {
         Character[] characterNumber = new Character[npcGenerate];
         for(int i = 0; i < npcGenerate; i++)
         {
-            //characterNumber[i] = new Human(Character.Role.getRandomRole(),testWep,1, "NPC " + (i+1), Character.Team.getRandomTeam(), Character.Type.PLAYER);
-            characterNumber[i] = new Human("NPC " + (i+1));
+            characterNumber[i] = new Human(Character.Role.getRandomRole(),testWep,1, "NPC " + (i+1), getRandomTeam(), Character.Type.PLAYER);
+            //characterNumber[i] = Character.raceGenerator("NPC " + (i+1), Character.Race.getRandomRace());
         }
     }
 
