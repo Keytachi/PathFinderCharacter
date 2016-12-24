@@ -4,6 +4,8 @@ import com.brandontest.Race.Character;
 import com.brandontest.Race.Human;
 import com.brandontest.Secondary.*;
 import com.brandontest.Weapons.*;
+import java.util.Collections;
+import java.util.Comparator;
 
 import static com.brandontest.Race.Character.Team.getRandomTeam;
 
@@ -34,6 +36,8 @@ public class Main {
         {
             placeHolder.announceStats();
         }
+        descendingOrder();
+        displayOrder();
 
     }
 
@@ -46,6 +50,23 @@ public class Main {
         {
             characterNumber[i] = new Human(Character.Role.getRandomRole(),testWep,1, "NPC " + (i+1), getRandomTeam(), Character.Type.PLAYER);
             //characterNumber[i] = Character.raceGenerator("NPC " + (i+1), Character.Race.getRandomRace());
+        }
+    }
+
+    public static void descendingOrder()
+    {
+        Collections.sort(Character.characterList, new Comparator<Character>() {
+            @Override
+            public int compare(Character o1, Character o2) {
+                return Double.valueOf(o2.getAttribute().getHaste()).compareTo(o1.getAttribute().getHaste());
+            }
+        });
+    }
+    public static void displayOrder()
+    {
+        for(int i = 0; i < Character.characterList.size(); i++)
+        {
+            System.out.println(Character.characterList.get(i).getName() + " moves with the haste value of " + Character.characterList.get(i).getAttribute().getHaste());
         }
     }
 
