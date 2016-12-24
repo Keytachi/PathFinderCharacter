@@ -4,8 +4,7 @@ import com.brandontest.Race.Character;
 import com.brandontest.Race.Human;
 import com.brandontest.Secondary.*;
 import com.brandontest.Weapons.*;
-import java.util.Collections;
-import java.util.Comparator;
+
 
 import static com.brandontest.Race.Character.Team.getRandomTeam;
 
