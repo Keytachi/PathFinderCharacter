@@ -221,7 +221,7 @@ public abstract class Character
                 jobtype.getAttribute().getCrit() + weapon.getAttribute().getCrit());
 
     }
-    public void announceStats()         //Display testing
+    public void announceStats()         //Display attribute
     {
         updateValue();
         findingHealth();
@@ -247,7 +247,7 @@ public abstract class Character
         specialAttribute();
         statsCombine();
     }
-    public void findingHealth()         //Adding more health since the base health starts at 100
+    public void findingHealth()         //Adding stamina into health
     {
         int healthValue = attribute.getStamina()*10;
         addHealth(healthValue);
@@ -257,11 +257,12 @@ public abstract class Character
     {
         this.jobtype.spell(this, target);
     }
-    public void attack(Character target)    //Sending the parameter
+    public void attack(Character target)    //Function should be a normal attack with the weapon
     {
         System.out.println("The strength before passing to the move is: " + attribute.getStrength());
         testMoves(target);
     }
+
 
     public void choices()
     {
@@ -277,13 +278,14 @@ public abstract class Character
 
         switch (Integer.parseInt(choice))
         {
-            case 1:
+            case 1:                     //Will call the normal attack function
                 break;
-            case 2:
+            case 2:                     //Will call the spell attack function base off the jobType.
                 break;
-            case 3:
+            case 3:                     //Inventory System later on
                 break;
-            case 4:
+            case 4:                     //Run function to add later on
+                run();
                 break;
             default:
         }
@@ -299,4 +301,20 @@ public abstract class Character
                 System.out.println("I am an elves race");
         }
     }*/
+
+    public void run()                           //Fleeing function
+    {
+        System.out.println(getName() + " has flee");
+        characterList.remove(this);     //Remove from the arrayList. Will add a successful/failure later on.
+    }
+
+    public static void descendingOrder()        //Function to sort it descending the arrayList via haste value
+    {
+        Collections.sort(Character.characterList, new Comparator<Character>() {
+            @Override
+            public int compare(Character o1, Character o2) {
+                return Double.valueOf(o2.getAttribute().getHaste()).compareTo(o1.getAttribute().getHaste());
+            }
+        });
+    }
 }
