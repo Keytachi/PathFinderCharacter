@@ -260,7 +260,7 @@ public abstract class Character
     public void attack(Character target)    //Function should be a normal attack with the weapon
     {
         System.out.println("The strength before passing to the move is: " + attribute.getStrength());
-        testMoves(target);
+        System.out.println(getName() + " is attacking " + target.getName());
     }
 
 
@@ -274,13 +274,15 @@ public abstract class Character
         System.out.println("Choose your move: ");
 
         Scanner input = new Scanner(System.in);
-        String choice = input.nextLine();
+        int choice = input.nextInt();
 
-        switch (Integer.parseInt(choice))
+        switch (choice)
         {
             case 1:                     //Will call the normal attack function
+                attack(findTarget());
                 break;
             case 2:                     //Will call the spell attack function base off the jobType.
+                jobtype.spell(this,findTarget());
                 break;
             case 3:                     //Inventory System later on
                 break;
@@ -288,7 +290,27 @@ public abstract class Character
                 run();
                 break;
             default:
+                System.out.println("Please choose within the limit of 1-4");
         }
+    }
+
+    public Character findTarget()
+    {
+        Scanner input = new Scanner(System.in);
+        System.out.println("Choose a target: ");
+        for(int i = 0; i < characterList.size(); i++)
+        {
+            System.out.println((i+1) + ". " + characterList.get(i).getName() + " = " + characterList.get(i).getTeam());
+        }
+        int choice = input.nextInt();
+
+        return targetSystem(choice);
+
+
+    }
+    public Character targetSystem(int choice)
+    {
+        return characterList.get(choice-1);
     }
     /**public static void raceGenerator(String name, Race raceComposition)
     {
