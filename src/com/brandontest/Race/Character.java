@@ -283,6 +283,7 @@ public abstract class Character
             System.out.println(target.getName() + " has died");
             System.out.println(target.getName() + " remaining health is: " + target.getHealth());
             characterList.remove(target);
+            update();
         }
         else System.out.println(target.getName() + " remaining health is: " + target.getHealth());
 
@@ -353,6 +354,8 @@ public abstract class Character
     {
         System.out.println(getName() + " has flee");
         characterList.remove(this);     //Remove from the arrayList. Will add a successful/failure later on.
+        update();
+        descendingOrder();
     }
 
     public static void descendingOrder()        //Function to sort it descending the arrayList via haste value
@@ -394,7 +397,7 @@ public abstract class Character
     {
         for(int i = 0; i < characterList.size(); i++)
         {
-            System.out.println(characterList.get(i).getName() + " is still left");
+            System.out.println(characterList.get(i).getName());
         }
     }
 
