@@ -3,7 +3,7 @@ package com.brandontest.Weapons;
 import com.brandontest.Secondary.Attribute;
 
 /**
- * Created by Kathy on 12/22/2016.
+ * Created by Brandon on 12/22/2016.
  */
 public class Weapon
 {

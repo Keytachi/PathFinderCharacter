@@ -9,7 +9,7 @@ import com.brandontest.Weapons.Weapon;
 import java.util.*;
 
 /**
- * Created by Kathy on 12/22/2016.
+ * Created by Brandon on 12/22/2016.
  */
 public abstract class Character
 {
@@ -63,8 +63,8 @@ public abstract class Character
         RUN;
     }*/
 
-    public static ArrayList<Character> characterList = new ArrayList<Character>();
-    public static ArrayList<Character> tempList = new ArrayList<Character>();
+    public static ArrayList<Character> characterList = new ArrayList<Character>();          //Character list that will be changing.
+    public static ArrayList<Character> tempList = new ArrayList<Character>();               //Character list that is temp and change if there is a change in characterList.
 
 
     //Composition of other classes
@@ -211,11 +211,11 @@ public abstract class Character
     //Setter Functions
     public void addHealth(int health){
         this.health += health;
-    }
+    }                                       //Function use for healing spell/inventory.
     public void subHealth(int health)
     {
         this.health -= health;
-    }
+    }                 //Function use for damaging spell.
 
     //Specialty Functions
     public Attribute statsCombine()     //Adding both JobType and Weapon attribute together
@@ -292,7 +292,7 @@ public abstract class Character
     }
 
 
-    public void choices()
+    public void choices()                                   //Get players information on what they want to do for their turn.
     {
 
         System.out.println("1. Attack");
@@ -314,7 +314,7 @@ public abstract class Character
                 break;
             case 3:                     //Inventory System later on
                 break;
-            case 4:                     //Run function to add later on
+            case 4:                     //Run function
                 run();
                 break;
             default:

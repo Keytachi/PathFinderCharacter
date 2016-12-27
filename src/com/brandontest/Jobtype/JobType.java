@@ -1,12 +1,13 @@
 package com.brandontest.Jobtype;
 
-import com.brandontest.Secondary.*;
 import com.brandontest.Race.Character;
+import com.brandontest.Secondary.Ability;
+import com.brandontest.Secondary.Attribute;
 
 import java.util.Scanner;
 
 /**
- * Created by Kathy on 12/22/2016.
+ * Created by Brandon on 12/22/2016.
  */
 public abstract class JobType implements Ability {
 
