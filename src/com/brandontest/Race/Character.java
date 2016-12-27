@@ -64,6 +64,7 @@ public abstract class Character
     }*/
 
     public static ArrayList<Character> characterList = new ArrayList<Character>();
+    public static ArrayList<Character> tempList = new ArrayList<Character>();
 
 
     //Composition of other classes
@@ -261,10 +262,10 @@ public abstract class Character
         addHealth(healthValue);
         getHealth();
     }
-    public void testMoves(Character target) //Testing attack moves
+    /*public void testMoves(Character target) //Testing attack moves
     {
         this.jobtype.spell(this, target);
-    }
+    }*/
     public void attack(Character target)    //Function should be a normal attack with the weapon
     {
         int str = (int)(attribute.getStrength() * .68);
@@ -355,7 +356,6 @@ public abstract class Character
         System.out.println(getName() + " has flee");
         characterList.remove(this);     //Remove from the arrayList. Will add a successful/failure later on.
         update();
-        descendingOrder();
     }
 
     public static void descendingOrder()        //Function to sort it descending the arrayList via haste value
@@ -386,6 +386,8 @@ public abstract class Character
         }
         if(good == 0 || bad == 0)
         {
+            good = 0;
+            bad = 0;
             return false;
         }
         else{
@@ -395,10 +397,27 @@ public abstract class Character
 
     public static void update()
     {
-        for(int i = 0; i < characterList.size(); i++)
+        if(characterList.size() != tempList.size())
         {
-            System.out.println(characterList.get(i).getName());
+            listCopy();
+            descendingOrder();
         }
+        else
+            System.out.println("There was no changes");
+    }
+
+    public static void listCopy()
+    {
+        tempList = (ArrayList<Character>)characterList.clone();
+    }
+
+    public static boolean characterChecker()
+    {
+        if(characterList.size() != tempList.size())
+        {
+            return true;
+        }
+        else return false;
     }
 
 }
