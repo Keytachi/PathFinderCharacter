@@ -268,21 +268,22 @@ public abstract class Character
     }*/
     public void attack(Character target)    //Function should be a normal attack with the weapon
     {
-        int str = (int)(attribute.getStrength() * .68);
+        int str = (int)(attribute.getStrength() * 1.04);
         int min = weapon.getMinDamage();
         int max = weapon.getMaxDamage();
-
-        int health = target.getHealth();
-
         int damage = (int) ((Math.random()*(max - min)+min)+str);
 
         System.out.println(target.getName() + " Health Pool is: " + target.getHealth());
-        System.out.println(getName() + " is attacking "  + target.getName() + " for " + damage + " physical damage.");
+        if(getName() == target.getName())
+        {
+            System.out.println(getName() + " attack themselves out of confusion for : " + damage + " physical damage.");
+        }
+        else {System.out.println(getName() + " is attacking "  + target.getName() + " for " + damage + " physical damage.");}
         target.subHealth(damage);
-        if(health <= 0)
+        if(target.getHealth() <= 0)
         {
             System.out.println(target.getName() + " has died");
-            System.out.println(target.getName() + " remaining health is: " + target.getHealth());
+            //System.out.println(target.getName() + " remaining health is: " + target.getHealth());
             characterList.remove(target);
             update();
         }
@@ -399,7 +400,6 @@ public abstract class Character
     {
         if(characterList.size() != tempList.size())
         {
-            listCopy();
             descendingOrder();
         }
         else
@@ -415,6 +415,7 @@ public abstract class Character
     {
         if(characterList.size() != tempList.size())
         {
+            listCopy();
             return true;
         }
         else return false;

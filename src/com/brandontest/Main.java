@@ -37,7 +37,7 @@ public class Main {
         do {
             Character.descendingOrder();
             displayOrder();
-        }while(gameOver() != false);
+        }while(Character.checker() != false);
 
     }
 
@@ -73,17 +73,8 @@ public class Main {
     }
 
 
-    public static boolean gameOver()
+    /*public static boolean gameOver()
     {
-        if(Character.checker() == true)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-
+        return Character.checker();
+    }*/
 }
