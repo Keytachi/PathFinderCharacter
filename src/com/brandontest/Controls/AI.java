@@ -7,4 +7,9 @@ package com.brandontest.Controls;
 public class AI {
 
     //TODO Create an AI system that has a logic if it knows it is going to fail then it will heal or flee.
+
+    public static void logicSystem()
+    {
+        
+    }
 }
