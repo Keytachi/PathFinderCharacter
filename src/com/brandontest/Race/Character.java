@@ -1,12 +1,16 @@
 package com.brandontest.Race;
 
+import com.brandontest.Controls.IO;
 import com.brandontest.Jobtype.JobType;
 import com.brandontest.Jobtype.Paladin;
 import com.brandontest.Jobtype.Warrior;
 import com.brandontest.Secondary.Attribute;
 import com.brandontest.Weapons.Weapon;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Random;
 
 /**
  * Created by Brandon on 12/22/2016.
@@ -267,8 +271,7 @@ public abstract class Character
     {
         this.jobtype.spell(this, target);
     }*/
-    public void attack(Character target)    //Function should be a normal attack with the weapon
-    {
+    public void attack(Character target) {
         int str = (int)(attribute.getStrength() * strModifier);
         int min = weapon.getMinDamage();
         int max = weapon.getMaxDamage();
@@ -277,9 +280,13 @@ public abstract class Character
         System.out.println(target.getName() + " Health Pool is: " + target.getHealth());
         if(getName() == target.getName())
         {
-            System.out.println(getName() + " attack themselves out of confusion for : " + damage + " physical damage.");
+            System.out.println(getName() + " attack themselves out of confusion for: " + damage + " physical damage.");
         }
-        else {System.out.println(getName() + " is attacking "  + target.getName() + " for " + damage + " physical damage.");}
+        else if(getTeam() == target.getTeam())
+        {
+            System.out.println(getName() + " has attack their teammate for: " + damage + " physical damage.");
+        }
+        else{System.out.println(getName() + " is attacking "  + target.getName() + " for " + damage + " physical damage.");}
         target.subHealth(damage);
         if(target.getHealth() <= 0)
         {
@@ -291,8 +298,6 @@ public abstract class Character
         else System.out.println(target.getName() + " remaining health is: " + target.getHealth());
 
     }
-
-
     /**public void choices()                                   //Get players information on what they want to do for their turn.
      {
 
@@ -330,9 +335,7 @@ public abstract class Character
      System.out.println("Please choose within the limit of 1-4");
      }
      }**/
-
-    public int inputInt()
-    {
+    /**public int inputInt() {
         Scanner input = new Scanner(System.in);
 
         try{
@@ -342,17 +345,15 @@ public abstract class Character
             System.out.println("Choose again but with a integer!!!!");
             return inputInt();
         }
-    }
-
-    public void choicesMove()
-    {
+    }*/
+    public void choicesMove() {
         System.out.println("1. Attack");
         System.out.println("2. Spell");
         System.out.println("3. Inventory");
         System.out.println("4. Run");
         System.out.println("Choose your move: ");
 
-        switch (inputInt())
+        switch (IO.inputInt())
         {
             case 1:                     //Will call the normal attack function
                 attack(findTarget());
@@ -370,24 +371,23 @@ public abstract class Character
                 choicesMove();          //Continuous loop if the right press is not correct.
         }
     }
+    public Character findTarget() {
 
-    public Character findTarget()
-    {
-        System.out.println("Choose a target: ");
         for(int i = 0; i < characterList.size(); i++)
         {
             System.out.println((i+1) + ". " + characterList.get(i).getName() + " = " + characterList.get(i).getTeam());
         }
 
-        if(inputInt() < characterList.size() && inputInt() > 0) {
-            return targetSystem(inputInt());
+        System.out.println("Choose a target: ");
+        int value = IO.inputInt();
+        if(value < characterList.size()+1 && value > 0) {
+            return targetSystem(value);
         }
         else {
             System.out.println("Please choose within the limits!");
             return findTarget();
         }
     }
-
     public Character targetSystem(int choice)
     {
         return characterList.get(choice-1);
@@ -403,26 +403,20 @@ public abstract class Character
                 System.out.println("I am an elves race");
         }
     }*/
-
-    public void run()                           //Fleeing function
-    {
+    public void run() {
         System.out.println(getName() + " has flee");
         characterList.remove(this);     //Remove from the arrayList. Will add a successful/failure later on.
         update();
     }
-
-    public static void descendingOrder()        //Function to sort it descending the arrayList via haste value
-    {
+    public static void descendingOrder(){
         Collections.sort(Character.characterList, new Comparator<Character>() {
             @Override
             public int compare(Character o1, Character o2) {
                 return Double.valueOf(o2.getAttribute().getHaste()).compareTo(o1.getAttribute().getHaste());
             }
         });
-    }
-
-    public static boolean checker()
-    {
+    }   //Function to sort it descending the arrayList via haste value
+    public static boolean checker() {
         int bad = 0;
         int good = 0;
 
@@ -447,9 +441,7 @@ public abstract class Character
             return true;
         }
     }
-
-    public static void update()
-    {
+    public static void update() {
         if(characterList.size() != tempList.size())
         {
             descendingOrder();
@@ -457,14 +449,11 @@ public abstract class Character
         else
             System.out.println("There was no changes");
     }
-
     public static void listCopy()
     {
         tempList = (ArrayList<Character>)characterList.clone();
     }
-
-    public static boolean characterChecker()
-    {
+    public static boolean characterChecker() {
         if(characterList.size() != tempList.size())
         {
             listCopy();
@@ -473,4 +462,5 @@ public abstract class Character
         else return false;
     }
 
+    //TODO: Create a weight system that will slow down the players haste.
 }

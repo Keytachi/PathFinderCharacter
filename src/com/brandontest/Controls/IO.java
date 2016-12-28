@@ -1,5 +1,6 @@
 package com.brandontest.Controls;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 /**
@@ -7,16 +8,18 @@ import java.util.Scanner;
  */
 public class IO
 {
-    private Object answer;
-    public Scanner keyboard = new Scanner(System.in);
 
-
-
-
-    public boolean validateAnswer()
+    public static int inputInt()
     {
-        return true;
-    }
+        Scanner input = new Scanner(System.in);
 
+        try{
+            int choice = input.nextInt();
+            return choice;
+        }catch(InputMismatchException e){
+            System.out.println("Choose again but with a integer!!!!");
+            return inputInt();
+        }
+    }
 
 }
