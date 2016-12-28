@@ -13,6 +13,7 @@ import java.util.*;
  */
 public abstract class Character
 {
+    private static final double strModifier = 1.20;
 
     public static enum Team
     {GOOD,
@@ -268,7 +269,7 @@ public abstract class Character
     }*/
     public void attack(Character target)    //Function should be a normal attack with the weapon
     {
-        int str = (int)(attribute.getStrength() * 1.04);
+        int str = (int)(attribute.getStrength() * strModifier);
         int min = weapon.getMinDamage();
         int max = weapon.getMaxDamage();
         int damage = (int) ((Math.random()*(max - min)+min)+str);
