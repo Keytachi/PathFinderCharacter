@@ -3,6 +3,7 @@ package com.brandontest.Jobtype;
 import com.brandontest.Race.Character;
 import com.brandontest.Secondary.Ability;
 import com.brandontest.Secondary.Attribute;
+import com.brandontest.Controls.IO;
 
 import java.util.Scanner;
 
@@ -16,6 +17,7 @@ public abstract class JobType implements Ability {
     private int maxBar;             //Limit of the player bar that the spell can use
     protected int startBar;         //Start of the player bar. Adjust accordingly to the class
     protected String title;         //Variable to override to display the Job type
+    protected Resource resource;
 
     //Overriding the toString function from the String to display the title variable
     @Override
@@ -26,7 +28,6 @@ public abstract class JobType implements Ability {
     //Superclass
     public JobType(Attribute attribute) {
         this.attribute = attribute;
-        this.maxBar = 100;
     }
 
     //Constructor
@@ -41,17 +42,27 @@ public abstract class JobType implements Ability {
         return attribute;
     }
 
-
-   /** public void Choices()
+    public void setResourceType(Character standard)
     {
-        switch(choices)
-        case 1:
-        Attack();
-        break;
-        case 2:
-        Spell();
-        break;
-    }**/
+        switch(standard.getRole())
+        {
+            case PALADIN:
+                this.maxBar = 100;
+                this.startBar = 100;
+                this.resource = Resource.MANA;
+                break;
+            case WARRIOR:
+                this.maxBar = 100;
+                this.startBar = 0;
+                this.resource = Resource.RAGE;
+                break;
+        }
+    }
+
+    public Resource getResource()
+    {
+        return resource;
+    }
 
     //Empty in case role does not have spells
     public void spell(Attribute damageAttribute)

@@ -88,6 +88,7 @@ public abstract class Character
     //Private parameters for the Character class
     private String name;
     private int health;
+    private int maxHealth;
     private int level;
 
 
@@ -103,6 +104,7 @@ public abstract class Character
         this.jobtype = jobType;
         this.weapon = weapon;
         this.health = 100;
+        this.maxHealth = 100;
         this.level = level;
         this.name = name;
         this.team = team;
@@ -146,9 +148,11 @@ public abstract class Character
         {
             case PALADIN:
                 this.jobtype = new Paladin();
+                jobtype.setResourceType(this);
                 break;
             case WARRIOR:
                 this.jobtype = new Warrior();
+                jobtype.setResourceType(this);
                 break;
             default:
         }
@@ -184,6 +188,10 @@ public abstract class Character
     public int getHealth() {
         return health;
     }
+    public int getMaxHealth()
+    {
+        return maxHealth;
+    }
     public int getLevel() {
         return level;
     }
@@ -217,11 +225,25 @@ public abstract class Character
     public void addHealth(int health){
         this.health += health;
     }                                       //Function use for healing spell/inventory.
+    public void addMaxHealth(int health){
+        this.maxHealth += health;
+    }
     public void subHealth(int health)
     {
         this.health -= health;
     }                 //Function use for damaging spell.
-
+    public void subMaxHealth(int health)
+    {
+        this.maxHealth -= health;
+    }
+    public void setHealth(int health)
+    {
+        this.health = health;
+    }
+    public void setMaxHealth(int health)
+    {
+        this.maxHealth = health;
+    }
     //Specialty Functions
     public Attribute statsCombine()     //Adding both JobType and Weapon attribute together
     {
@@ -265,12 +287,10 @@ public abstract class Character
     {
         int healthValue = attribute.getStamina()*10;
         addHealth(healthValue);
+        addMaxHealth(healthValue);
         getHealth();
     }
-    /*public void testMoves(Character target) //Testing attack moves
-    {
-        this.jobtype.spell(this, target);
-    }*/
+
     public void attack(Character target) {
         int str = (int)(attribute.getStrength() * strModifier);
         int min = weapon.getMinDamage();
@@ -298,54 +318,7 @@ public abstract class Character
         else System.out.println(target.getName() + " remaining health is: " + target.getHealth());
 
     }
-    /**public void choices()                                   //Get players information on what they want to do for their turn.
-     {
 
-     System.out.println("1. Attack");
-     System.out.println("2. Spell");
-     System.out.println("3. Inventory");
-     System.out.println("4. Run");
-     System.out.println("Choose your move: ");
-
-     Scanner input = new Scanner(System.in);
-     int choice = 0;
-
-     try{
-     choice = input.nextInt();
-     choicesMove(choice);
-     }catch(InputMismatchException e){
-     System.out.println("ERROR!");
-     choices();
-     }
-
-     switch (choice)
-     {
-     case 1:                     //Will call the normal attack function
-     attack(findTarget());
-     break;
-     case 2:                     //Will call the spell attack function base off the jobType.
-     jobtype.spell(this,findTarget());
-     break;
-     case 3:                     //Inventory System later on
-     break;
-     case 4:                     //Run function
-     run();
-     break;
-     default:
-     System.out.println("Please choose within the limit of 1-4");
-     }
-     }**/
-    /**public int inputInt() {
-        Scanner input = new Scanner(System.in);
-
-        try{
-             int choice = input.nextInt();
-            return choice;
-        }catch(InputMismatchException e){
-            System.out.println("Choose again but with a integer!!!!");
-            return inputInt();
-        }
-    }*/
     public void choicesMove() {
         System.out.println("1. Attack");
         System.out.println("2. Spell");
@@ -392,17 +365,7 @@ public abstract class Character
     {
         return characterList.get(choice-1);
     }
-    /**public static void raceGenerator(String name, Race raceComposition)
-    {
-        switch(raceComposition)
-        {
-            case HUMAN:
-                //new Human(name);
-                break;
-            case ELVES:
-                System.out.println("I am an elves race");
-        }
-    }*/
+
     public void run() {
         System.out.println(getName() + " has flee");
         characterList.remove(this);     //Remove from the arrayList. Will add a successful/failure later on.

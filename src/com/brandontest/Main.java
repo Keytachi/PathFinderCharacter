@@ -11,20 +11,7 @@ public class Main {
 
     public static void main(String[] args)
     {
-
         game();
-
-        /*
-        Weapon baseWep = new Weapon(new Attribute(6,8,20,15,2,1),2,10,2.6);
-        Human playerNPC = new Human(new Paladin(),baseWep, 1, "Brandon", Character.Team.GOOD, Character.Type.PLAYER);
-        Human playerNPC2 = new Human(new Warrior(), baseWep, 99, "Test NPC", Character.Team.BAD, Character.Type.NPC);
-
-
-        for(Character placeHolder : Character.characterList)
-        {
-            placeHolder.announceStats();
-            placeHolder.attack(playerNPC2);
-        }*/
     }
 
     public static void game()
@@ -71,10 +58,4 @@ public class Main {
                 }
         }
     }
-
-
-    /*public static boolean gameOver()
-    {
-        return Character.checker();
-    }*/
 }
