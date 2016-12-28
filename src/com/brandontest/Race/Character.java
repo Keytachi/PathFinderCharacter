@@ -293,19 +293,66 @@ public abstract class Character
     }
 
 
-    public void choices()                                   //Get players information on what they want to do for their turn.
-    {
+    /**public void choices()                                   //Get players information on what they want to do for their turn.
+     {
 
+     System.out.println("1. Attack");
+     System.out.println("2. Spell");
+     System.out.println("3. Inventory");
+     System.out.println("4. Run");
+     System.out.println("Choose your move: ");
+
+     Scanner input = new Scanner(System.in);
+     int choice = 0;
+
+     try{
+     choice = input.nextInt();
+     choicesMove(choice);
+     }catch(InputMismatchException e){
+     System.out.println("ERROR!");
+     choices();
+     }
+
+     switch (choice)
+     {
+     case 1:                     //Will call the normal attack function
+     attack(findTarget());
+     break;
+     case 2:                     //Will call the spell attack function base off the jobType.
+     jobtype.spell(this,findTarget());
+     break;
+     case 3:                     //Inventory System later on
+     break;
+     case 4:                     //Run function
+     run();
+     break;
+     default:
+     System.out.println("Please choose within the limit of 1-4");
+     }
+     }**/
+
+    public int inputInt()
+    {
+        Scanner input = new Scanner(System.in);
+
+        try{
+             int choice = input.nextInt();
+            return choice;
+        }catch(InputMismatchException e){
+            System.out.println("Choose again but with a integer!!!!");
+            return inputInt();
+        }
+    }
+
+    public void choicesMove()
+    {
         System.out.println("1. Attack");
         System.out.println("2. Spell");
         System.out.println("3. Inventory");
         System.out.println("4. Run");
         System.out.println("Choose your move: ");
 
-        Scanner input = new Scanner(System.in);
-        int choice = input.nextInt();
-
-        switch (choice)
+        switch (inputInt())
         {
             case 1:                     //Will call the normal attack function
                 attack(findTarget());
@@ -319,24 +366,28 @@ public abstract class Character
                 run();
                 break;
             default:
-                System.out.println("Please choose within the limit of 1-4");
+                System.out.println("Please choose within the limit of 1-4 ");
+                choicesMove();          //Continuous loop if the right press is not correct.
         }
     }
 
     public Character findTarget()
     {
-        Scanner input = new Scanner(System.in);
         System.out.println("Choose a target: ");
         for(int i = 0; i < characterList.size(); i++)
         {
             System.out.println((i+1) + ". " + characterList.get(i).getName() + " = " + characterList.get(i).getTeam());
         }
-        int choice = input.nextInt();
 
-        return targetSystem(choice);
-
-
+        if(inputInt() < characterList.size() && inputInt() > 0) {
+            return targetSystem(inputInt());
+        }
+        else {
+            System.out.println("Please choose within the limits!");
+            return findTarget();
+        }
     }
+
     public Character targetSystem(int choice)
     {
         return characterList.get(choice-1);

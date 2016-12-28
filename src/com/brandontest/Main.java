@@ -63,7 +63,7 @@ public class Main {
                 System.out.println(Character.characterList.get(i).getName() + " moves with the haste value of " + Character.characterList.get(i).getAttribute().getHaste());
                 if (Character.characterList.get(i).getPlayable() == Character.Type.PLAYER)                           //Checking to see if the current turn is an NPC or a player.
                 {
-                    Character.characterList.get(i).choices();
+                    Character.characterList.get(i).choicesMove();
                     if(Character.characterChecker() == true)
                     {
                         i--;
