@@ -271,6 +271,7 @@ public abstract class Character
         System.out.println("Team: " + getTeam());
         System.out.println("Role: " + getRole());
         System.out.println("Type of Player: " + getPlayable());
+        testRoll();
         System.out.println("\n\n");
 
     }
@@ -425,5 +426,9 @@ public abstract class Character
         else return false;
     }
 
+    public void testRoll()
+    {
+        System.out.println(IO.rollDice(IO.d20));
+    }
     //TODO: Create a weight system that will slow down the players haste.
 }

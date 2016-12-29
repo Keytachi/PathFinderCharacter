@@ -1,5 +1,7 @@
 package com.brandontest.Jobtype;
 
+import com.brandontest.Controls.IO;
+import com.brandontest.Race.Character;
 import com.brandontest.Secondary.Attribute;
 
 /**
@@ -28,34 +30,34 @@ public class Warrior extends JobType
 
     //Polymorphism of the Spell function
     @Override
-    public void spell(Attribute damageAttribute)
+    public void spell(Character player, Character target)
     {
-        switch(choice())
+        switch(IO.inputInt())
         {
             case 1:
-                rend(damageAttribute);
+                rend(player,target);
                 break;
             case 2:
-                charge(damageAttribute);
+                charge(player,target);
                 break;
             case 3:
-                wound(damageAttribute);
+                wound(player,target);
                 break;
         }
 
     }
 
     //A special spell move from warrior only
-    private int rend(Attribute damageAttribute)
+    private int rend(Character player, Character target)
     {
-        System.out.println("Strength that is being pass is: " + damageAttribute.getStrength());
+        System.out.println("Strength that is being pass is: " + player.getAttribute().getStrength());
         System.out.println("You press rend");
         startBar=-30;
         return 1;
     }
 
     //A healing ability from warrior only
-    private int charge(Attribute damageAttribute)
+    private int charge(Character player, Character target)
     {
         System.out.println("You press charge");
         startBar=+10;
@@ -63,7 +65,7 @@ public class Warrior extends JobType
     }
 
     //A damage spell move from warrior only
-    private int wound(Attribute damageAttribute)
+    private int wound(Character player, Character target)
     {
         System.out.println("You press wound");
         startBar=-15;

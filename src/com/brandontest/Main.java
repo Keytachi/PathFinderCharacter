@@ -1,5 +1,6 @@
 package com.brandontest;
 
+
 import com.brandontest.Race.Character;
 import com.brandontest.Race.Human;
 import com.brandontest.Secondary.Attribute;
@@ -12,6 +13,7 @@ public class Main {
     public static void main(String[] args)
     {
         game();
+
     }
 
     public static void game()

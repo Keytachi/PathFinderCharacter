@@ -22,7 +22,7 @@ public class Paladin extends JobType
     }*/
     public Paladin()
     {
-        this(generateStats(12,3));
+        this(generateStats(IO.rollDice(IO.d20),IO.rollDice(IO.d20)));
     }
     //Superclass
     public Paladin(Attribute attribute) {

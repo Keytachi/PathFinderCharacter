@@ -5,8 +5,6 @@ import com.brandontest.Secondary.Ability;
 import com.brandontest.Secondary.Attribute;
 import com.brandontest.Controls.IO;
 
-import java.util.Scanner;
-
 /**
  * Created by Brandon on 12/22/2016.
  */
@@ -65,14 +63,10 @@ public abstract class JobType implements Ability {
     }
 
     //Empty in case role does not have spells
-    public void spell(Attribute damageAttribute)
-    {
-        System.out.println("You do not have any spell");
-    }
-    //Empty in case role does not have spells
     public void spell(Character player, Character target)
     {
         System.out.println("You do not have any spell");
+        player.choicesMove();
     }
 
     //Function to add a randomize integer to the attribute class.
@@ -85,14 +79,6 @@ public abstract class JobType implements Ability {
                 randomStats(a),
                 randomStats(a),
                 randomStats(a));
-        /*
-        attribute.setStrength(randomStats(10));
-        attribute.setAgility(randomStats(10));
-        attribute.setIntellect(randomStats(10));
-        attribute.setStamina(randomStats(10));
-        attribute.setCrit(randomStats(10));
-        attribute.setHaste(randomStats(10));
-        */
     }
 
     //Same function as the top but giving more parameter to give a more precision.
@@ -117,16 +103,4 @@ public abstract class JobType implements Ability {
     {
         return (int) (Math.random()*(max-min+1)+min);
     }
-
-    //Grab player input to select a move.
-    public int choice()
-    {
-        int answer;
-        Scanner enter = new Scanner(System.in);
-        System.out.println("What is your choice: ");
-        answer = Integer.parseInt(enter.nextLine());
-
-        return answer;
-    }
-
 }
