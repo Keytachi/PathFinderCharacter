@@ -18,7 +18,7 @@ public class Warrior extends JobType
     }*/
     public Warrior()
     {
-        this(generateStats(12,3));
+        this(generateStats(IO.d20.roll(),IO.d20.roll()));
     }
 
     //Superclass
@@ -30,18 +30,24 @@ public class Warrior extends JobType
 
     //Polymorphism of the Spell function
     @Override
-    public void spell(Character player, Character target)
+    public void spell(Character player)
     {
+        IO.printHeader("Warrior Moves Set");
+        System.out.println("1. Rend");
+        System.out.println("2. Charge");
+        System.out.println("3. Wound");
+        System.out.println("Choose what spell you want to use: ");
+
         switch(IO.inputInt())
         {
             case 1:
-                rend(player,target);
+                rend(player,player.findTarget());
                 break;
             case 2:
-                charge(player,target);
+                charge(player,player.findTarget());
                 break;
             case 3:
-                wound(player,target);
+                wound(player,player.findTarget());
                 break;
         }
 
@@ -52,7 +58,7 @@ public class Warrior extends JobType
     {
         System.out.println("Strength that is being pass is: " + player.getAttribute().getStrength());
         System.out.println("You press rend");
-        startBar=-30;
+        subResource(10);
         return 1;
     }
 
@@ -60,7 +66,7 @@ public class Warrior extends JobType
     private int charge(Character player, Character target)
     {
         System.out.println("You press charge");
-        startBar=+10;
+        addResource(10);
         return 1;
     }
 
@@ -68,7 +74,7 @@ public class Warrior extends JobType
     private int wound(Character player, Character target)
     {
         System.out.println("You press wound");
-        startBar=-15;
+        subResource(50);
         return 1;
     }
 }

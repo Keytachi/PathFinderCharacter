@@ -1,8 +1,9 @@
 package com.brandontest.Controls;
 
+import com.rfsoftware.tonio337.dice.Dice;
+
 import java.util.InputMismatchException;
 import java.util.Scanner;
-import com.rfsoftware.tonio337.dice.Dice;
 
 /**
  * Created by Brandon on 12/22/2016.
@@ -30,9 +31,16 @@ public class IO
         }
     }
 
-    public static int rollDice(Dice dice)
-    {
-        return dice.roll();
-    }
+    public static void printHeader(String s) {
+        System.out.println("\n******************************\n" +
+                s +
+                "\n******************************");
 
+    }
+    public static void printHeaderName(String s) {
+        System.out.println("\n************************************************\n" +
+                s +
+                "\n************************************************");
+
+    }
 }

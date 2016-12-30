@@ -3,9 +3,6 @@ package com.brandontest.Race;
 import com.brandontest.Jobtype.JobType;
 import com.brandontest.Weapons.Weapon;
 
-//import com.brandontest.Secondary.Attribute;
-//import com.brandontest.Secondary.Attribute;
-
 /**
  * Created by Brandon on 12/22/2016.
  */

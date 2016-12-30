@@ -22,7 +22,7 @@ public class Paladin extends JobType
     }*/
     public Paladin()
     {
-        this(generateStats(IO.rollDice(IO.d20),IO.rollDice(IO.d20)));
+        this(generateStats(IO.d20.roll(),IO.d20.roll()));
     }
     //Superclass
     public Paladin(Attribute attribute) {
@@ -33,17 +33,18 @@ public class Paladin extends JobType
 
 
     //A healing ability from paladin only
-    private int holylight()
+    private void holylight()
     {
-        startBar=-10;
-        return 1;
+        subResource(10);
+        System.out.println(getResource() + ": " + getStartBar() + "/" + getMaxBar());
     }
 
     //A damage spell move from paladin only
-    private int strike()
+    private void strike()
     {
-        startBar=-15;
-        return 1;
+        subResource(15);
+        System.out.println(getResource() + ": " + getStartBar() + "/" + getMaxBar());
+
     }
 
     //Test function
@@ -56,16 +57,19 @@ public class Paladin extends JobType
             int damage = intellect + strength * 2;
             target.subHealth(damage);
             System.out.println(player.getName() + " used Judgement on " + target.getName() + " for " + damage + " holy damage.");
-            startBar=-20;
+            subResource(20);
+            System.out.println(getResource() + ": " + getStartBar() + "/" + getMaxBar());
 
         }else{
             System.out.println("Not enough mana");
+            spell(player);
 
         }
     }
     @Override
-    public void spell(Character player, Character target)
+    public void spell(Character player)
     {
+        IO.printHeader("Paladin Moves Set");
         System.out.println("1. Judgement");
         System.out.println("2. Holy Light");
         System.out.println("3. Holy Strike");
@@ -74,7 +78,7 @@ public class Paladin extends JobType
         switch(IO.inputInt())
         {
             case 1:
-                judgement(player, target);
+                judgement(player, player.findTarget());
                 break;
             case 2:
                 holylight();

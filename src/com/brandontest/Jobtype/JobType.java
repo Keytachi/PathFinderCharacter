@@ -3,7 +3,6 @@ package com.brandontest.Jobtype;
 import com.brandontest.Race.Character;
 import com.brandontest.Secondary.Ability;
 import com.brandontest.Secondary.Attribute;
-import com.brandontest.Controls.IO;
 
 /**
  * Created by Brandon on 12/22/2016.
@@ -63,10 +62,29 @@ public abstract class JobType implements Ability {
     }
 
     //Empty in case role does not have spells
-    public void spell(Character player, Character target)
+    public void spell(Character player)
     {
         System.out.println("You do not have any spell");
         player.choicesMove();
+    }
+
+    public void addResource(int value)
+    {
+        this.startBar += value;
+    }
+
+    public void subResource(int value)
+    {
+        this.startBar -= value;
+    }
+
+    public int getStartBar()
+    {
+        return startBar;
+    }
+    public int getMaxBar()
+    {
+        return maxBar;
     }
 
     //Function to add a randomize integer to the attribute class.

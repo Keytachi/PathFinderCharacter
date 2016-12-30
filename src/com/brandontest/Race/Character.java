@@ -136,6 +136,7 @@ public abstract class Character
 
         this.weapon = weapon;
         this.health = 100;
+        this.maxHealth = 100;
         this.level = level;
         this.name = name;
         this.team = team;
@@ -271,7 +272,6 @@ public abstract class Character
         System.out.println("Team: " + getTeam());
         System.out.println("Role: " + getRole());
         System.out.println("Type of Player: " + getPlayable());
-        testRoll();
         System.out.println("\n\n");
 
     }
@@ -289,7 +289,6 @@ public abstract class Character
         int healthValue = attribute.getStamina()*10;
         addHealth(healthValue);
         addMaxHealth(healthValue);
-        getHealth();
     }
 
     public void attack(Character target) {
@@ -309,14 +308,21 @@ public abstract class Character
         }
         else{System.out.println(getName() + " is attacking "  + target.getName() + " for " + damage + " physical damage.");}
         target.subHealth(damage);
+
+        if(role == Role.WARRIOR)
+        {
+            jobtype.addResource(5);
+        }
+
         if(target.getHealth() <= 0)
         {
             System.out.println(target.getName() + " has died");
-            //System.out.println(target.getName() + " remaining health is: " + target.getHealth());
             characterList.remove(target);
             update();
+            System.out.println(jobtype.getResource() + ": " + jobtype.getStartBar() + "/" + jobtype.getMaxBar());
         }
         else System.out.println(target.getName() + " remaining health is: " + target.getHealth());
+        System.out.println(jobtype.getResource() + ": " + jobtype.getStartBar() + "/" + jobtype.getMaxBar());
 
     }
 
@@ -333,7 +339,7 @@ public abstract class Character
                 attack(findTarget());
                 break;
             case 2:                     //Will call the spell attack function base off the jobType.
-                jobtype.spell(this,findTarget());
+                jobtype.spell(this);
                 break;
             case 3:                     //Inventory System later on
                 break;
@@ -347,6 +353,7 @@ public abstract class Character
     }
     public Character findTarget() {
 
+        IO.printHeader("Character List");
         for(int i = 0; i < characterList.size(); i++)
         {
             System.out.println((i+1) + ". " + characterList.get(i).getName() + " = " + characterList.get(i).getTeam());
@@ -380,7 +387,7 @@ public abstract class Character
             }
         });
     }   //Function to sort it descending the arrayList via haste value
-    public static boolean checker() {
+    public static boolean checker() {                           //This function will be use to check to see if the game is over or not. This will depend if there are any more players on an opposing team.
         int bad = 0;
         int good = 0;
 
@@ -405,7 +412,7 @@ public abstract class Character
             return true;
         }
     }
-    public static void update() {
+    public void update() {                           //Function to compare the tempList to the characterList and if there are any changes, update the order of the players again.
         if(characterList.size() != tempList.size())
         {
             descendingOrder();
@@ -416,8 +423,9 @@ public abstract class Character
     public static void listCopy()
     {
         tempList = (ArrayList<Character>)characterList.clone();
-    }
-    public static boolean characterChecker() {
+    }       //Function copy the characterList to tempList.
+
+    public static boolean characterChecker() {      //Check to see if there is a difference between tempList and characterList to update or not.
         if(characterList.size() != tempList.size())
         {
             listCopy();
@@ -426,9 +434,22 @@ public abstract class Character
         else return false;
     }
 
-    public void testRoll()
-    {
-        System.out.println(IO.rollDice(IO.d20));
-    }
     //TODO: Create a weight system that will slow down the players haste.
+
+    public void setdebuff()
+    {
+        //TODO: Create where the debuff will lower an attribute or deals damage over time (per round)
+        
+    }
+
+    public void setbuff()
+    {
+        //TODO:Create where the buff will increase an attribute or reduce damage taken.
+    }
+
+    public void removeAffect()
+    {
+        //TODO: Function to remove the buff or debuff from a character
+    }
+
 }
