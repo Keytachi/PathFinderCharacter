@@ -68,6 +68,12 @@ public abstract class Character
         RUN;
     }*/
 
+    public static enum Status{
+        STUN,
+        DEAD,
+        ALIVE
+    }
+
     public static ArrayList<Character> characterList = new ArrayList<Character>();          //Character list that will be changing.
     public static ArrayList<Character> tempList = new ArrayList<Character>();               //Character list that is temp and change if there is a change in characterList.
 
@@ -83,6 +89,7 @@ public abstract class Character
     protected Role role;
     protected String race;
     protected Race raceComposition;
+    protected Status statusToGo;
     //protected Choice choice; - Testing for choices
 
     //Private parameters for the Character class
@@ -110,6 +117,7 @@ public abstract class Character
         this.team = team;
         this.playable = playable;
         this.attribute = statsCombine();
+        this.statusToGo = Status.ALIVE;
 
 
         switch (team)
@@ -143,6 +151,7 @@ public abstract class Character
         this.playable = playable;
         this.role = role;
         this.raceComposition = getRaceComposition();
+        this.statusToGo = Status.ALIVE;
 
 
         switch(role)
@@ -221,6 +230,9 @@ public abstract class Character
         return attribute;
     }
     public Race getRaceComposition(){return raceComposition;}
+    public Status getStatusToGo(){
+        return statusToGo;
+    }
 
     //Setter Functions
     public void addHealth(int health){
@@ -245,6 +257,7 @@ public abstract class Character
     {
         this.maxHealth = health;
     }
+
     //Specialty Functions
     public Attribute statsCombine()     //Adding both JobType and Weapon attribute together
     {
@@ -317,8 +330,7 @@ public abstract class Character
         if(target.getHealth() <= 0)
         {
             System.out.println(target.getName() + " has died");
-            characterList.remove(target);
-            update();
+            target.turnEnd();
             System.out.println(jobtype.getResource() + ": " + jobtype.getStartBar() + "/" + jobtype.getMaxBar());
         }
         else System.out.println(target.getName() + " remaining health is: " + target.getHealth());
@@ -327,6 +339,9 @@ public abstract class Character
     }
 
     public void choicesMove() {
+        IO.printHeaderName(getName() + " - " + getRole() +
+                " - (HEALTH: " + getHealth() + "/" + getMaxHealth() +
+                " | " + jobtype.getResource() + ": " + jobtype.getStartBar() + "/" + jobtype.getMaxBar() + ")");
         System.out.println("1. Attack");
         System.out.println("2. Spell");
         System.out.println("3. Inventory");
@@ -356,12 +371,17 @@ public abstract class Character
         IO.printHeader("Character List");
         for(int i = 0; i < characterList.size(); i++)
         {
-            System.out.println((i+1) + ". " + characterList.get(i).getName() + " = " + characterList.get(i).getTeam());
+            System.out.println((i+1) + ". " + characterList.get(i).getName() + " = " + characterList.get(i).getTeam() + " - " + characterList.get(i).getStatusToGo());
         }
 
         System.out.println("Choose a target: ");
         int value = IO.inputInt();
         if(value < characterList.size()+1 && value > 0) {
+            if(characterList.get(value - 1).getStatusToGo() == Status.DEAD)
+                {
+                    System.out.println("Target is dead.");
+                    return findTarget();
+                }
             return targetSystem(value);
         }
         else {
@@ -377,7 +397,7 @@ public abstract class Character
     public void run() {
         System.out.println(getName() + " has flee");
         characterList.remove(this);     //Remove from the arrayList. Will add a successful/failure later on.
-        update();
+        descendingOrder();
     }
     public static void descendingOrder(){
         Collections.sort(Character.characterList, new Comparator<Character>() {
@@ -452,4 +472,29 @@ public abstract class Character
         //TODO: Function to remove the buff or debuff from a character
     }
 
+    public void startTurn()
+    {
+        if(characterStatus() == Status.ALIVE)
+        {
+            choicesMove();
+        }
+        turnEnd();
+    }
+
+    public Status characterStatus()
+    {
+        if(statusToGo == Status.DEAD || statusToGo == Status.STUN)
+        {
+            return getStatusToGo();
+        }
+        return getStatusToGo();
+    }
+
+    public void turnEnd()
+    {
+        if(getHealth() <= 0)
+        {
+            statusToGo = Status.DEAD;
+        }
+    }
 }

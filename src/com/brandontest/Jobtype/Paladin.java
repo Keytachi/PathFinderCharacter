@@ -22,7 +22,7 @@ public class Paladin extends JobType
     }*/
     public Paladin()
     {
-        this(generateStats(IO.d20.roll(),IO.d20.roll()));
+        this(generateStats(20,1));
     }
     //Superclass
     public Paladin(Attribute attribute) {
@@ -56,6 +56,12 @@ public class Paladin extends JobType
             int strength = player.getAttribute().getStrength() * (int)strModifier;
             int damage = intellect + strength * 2;
             target.subHealth(damage);
+            if(target.getHealth() <= 0)
+            {
+                System.out.println(target.getName() + " has died");
+                target.turnEnd();
+                System.out.println(getResource() + ": " + getStartBar() + "/" + getMaxBar());
+            }
             System.out.println(player.getName() + " used Judgement on " + target.getName() + " for " + damage + " holy damage.");
             subResource(20);
             System.out.println(getResource() + ": " + getStartBar() + "/" + getMaxBar());
