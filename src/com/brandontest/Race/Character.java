@@ -71,7 +71,8 @@ public abstract class Character
     public static enum Status{
         STUN,
         DEAD,
-        ALIVE
+        ALIVE,
+        FLEE
     }
 
     public static ArrayList<Character> characterList = new ArrayList<Character>();          //Character list that will be changing.
@@ -377,9 +378,9 @@ public abstract class Character
         System.out.println("Choose a target: ");
         int value = IO.inputInt();
         if(value < characterList.size()+1 && value > 0) {
-            if(characterList.get(value - 1).getStatusToGo() == Status.DEAD)
+            if(characterList.get(value - 1).getStatusToGo() == Status.DEAD || characterList.get(value - 1).getStatusToGo() == Status.FLEE)
                 {
-                    System.out.println("Target is dead.");
+                    System.out.println("Target can't be attack.");
                     return findTarget();
                 }
             return targetSystem(value);
@@ -396,8 +397,7 @@ public abstract class Character
 
     public void run() {
         System.out.println(getName() + " has flee");
-        characterList.remove(this);     //Remove from the arrayList. Will add a successful/failure later on.
-        descendingOrder();
+        statusToGo = Status.FLEE;
     }
     public static void descendingOrder(){
         Collections.sort(Character.characterList, new Comparator<Character>() {
@@ -432,7 +432,7 @@ public abstract class Character
             return true;
         }
     }
-    public void update() {                           //Function to compare the tempList to the characterList and if there are any changes, update the order of the players again.
+    /**public void update() {                           //Function to compare the tempList to the characterList and if there are any changes, update the order of the players again.
         if(characterList.size() != tempList.size())
         {
             descendingOrder();
@@ -452,7 +452,7 @@ public abstract class Character
             return true;
         }
         else return false;
-    }
+    }*/
 
     //TODO: Create a weight system that will slow down the players haste.
 
@@ -496,5 +496,17 @@ public abstract class Character
         {
             statusToGo = Status.DEAD;
         }
+
+    }
+
+    public static void updateAfter()
+    {
+        for(int i = 0; i < characterList.size(); i++)
+        {
+            if(characterList.get(i).statusToGo == Status.FLEE)
+            characterList.remove(characterList.get(i));
+        }
+        descendingOrder();
+
     }
 }

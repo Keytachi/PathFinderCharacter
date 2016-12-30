@@ -20,7 +20,6 @@ public class Main {
     public static void game()
     {
         createPlayer();
-        Character.listCopy();
         for (Character placeHolder : Character.characterList) {
             placeHolder.announceStats();
         }
@@ -37,7 +36,7 @@ public class Main {
         int npcGenerate = 2; //(int)(Math.random()*10)+2;                       //From the range of 2-12 since it can randomly only do 1 character at a time.
         Character[] characterNumber = new Character[npcGenerate];               //Creating an object array using the Character class.
 
-        Character test = new Human(new Paladin(new Attribute(99,99,99,99,99,99)),testWep,10,"Test Damage",Character.Team.GOOD, Character.Type.PLAYER);
+        Character test = new Human(new Paladin(new Attribute(999,999,999,999,999,999)),testWep,10,"Test Damage",Character.Team.GOOD, Character.Type.PLAYER);
         for(int i = 0; i < npcGenerate; i++)
         {
             characterNumber[i] = new Human(Character.Role.getRandomRole(),testWep,1, "NPC " + (i+1), getRandomTeam(), Character.Type.PLAYER);
@@ -63,5 +62,6 @@ public class Main {
                     }
                 }*/
         }
+        Character.updateAfter();
     }
 }
