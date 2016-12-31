@@ -41,13 +41,13 @@ public class Warrior extends JobType
         switch(IO.inputInt())
         {
             case 1:
-                rend(player,player.findTarget());
+                rend(player,IO.findTarget());
                 break;
             case 2:
-                charge(player,player.findTarget());
+                charge(player,IO.findTarget());
                 break;
             case 3:
-                wound(player,player.findTarget());
+                wound(player,IO.findTarget());
                 break;
         }
 

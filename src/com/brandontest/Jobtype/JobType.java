@@ -1,5 +1,6 @@
 package com.brandontest.Jobtype;
 
+import com.brandontest.Controls.IO;
 import com.brandontest.Race.Character;
 import com.brandontest.Secondary.Ability;
 import com.brandontest.Secondary.Attribute;
@@ -65,7 +66,7 @@ public abstract class JobType implements Ability {
     public void spell(Character player)
     {
         System.out.println("You do not have any spell");
-        player.choicesMove();
+        IO.choicesMove(player);
     }
 
     public void addResource(int value)

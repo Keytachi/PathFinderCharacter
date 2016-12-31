@@ -1,6 +1,8 @@
 package com.brandontest;
 
 
+import com.brandontest.Controls.BattleSystem;
+import com.brandontest.Controls.IO;
 import com.brandontest.Jobtype.Paladin;
 import com.brandontest.Race.Character;
 import com.brandontest.Race.Human;
@@ -20,13 +22,13 @@ public class Main {
     public static void game()
     {
         createPlayer();
-        for (Character placeHolder : Character.characterList) {
-            placeHolder.announceStats();
+        for (Character placeHolder : BattleSystem.characterList) {
+            IO.announceStats(placeHolder);
         }
         do {
-            Character.descendingOrder();
-            characterTurn();
-        }while(Character.checker() != false);
+            BattleSystem.descendingOrder();
+            BattleSystem.characterTurn();
+        }while(BattleSystem.checker() != false);
 
     }
 
@@ -43,25 +45,5 @@ public class Main {
         }
     }
 
-    //Display the order that the special sorting function via haste value.
-    public static void characterTurn()
-    {
-        for(int i = 0; i < Character.characterList.size(); i++)
-        {
-            Character.characterList.get(i).startTurn();
 
-            /*IO.printHeaderName(Character.characterList.get(i).getName() + " - " + Character.characterList.get(i).getRole() +
-                    " - (HEALTH: " + Character.characterList.get(i).getHealth() + "/" + Character.characterList.get(i).getMaxHealth() +
-                    " | " + Character.characterList.get(i).getJobtype().getResource() + ": " + Character.characterList.get(i).getJobtype().getStartBar() + "/" + Character.characterList.get(i).getJobtype().getMaxBar() + ")");
-                if (Character.characterList.get(i).getPlayable() == Character.Type.PLAYER)                           //Checking to see if the current turn is an NPC or a player.
-                {
-                    Character.characterList.get(i).choicesMove();
-                    if(Character.characterChecker() == true)
-                    {
-                        i--;
-                    }
-                }*/
-        }
-        Character.updateAfter();
-    }
 }

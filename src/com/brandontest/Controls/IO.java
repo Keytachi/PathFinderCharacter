@@ -1,5 +1,6 @@
 package com.brandontest.Controls;
 
+import com.brandontest.Race.Character;
 import com.rfsoftware.tonio337.dice.Dice;
 
 import java.util.InputMismatchException;
@@ -42,5 +43,101 @@ public class IO
                 s +
                 "\n************************************************");
 
+    }
+
+    public static Character findTarget() {
+
+        IO.printHeader("Character List");
+        for(int i = 0; i < BattleSystem.characterList.size(); i++)
+        {
+            System.out.println((i+1) + ". " + BattleSystem.characterList.get(i).getName() + " = " + BattleSystem.characterList.get(i).getTeam() + " - " + BattleSystem.characterList.get(i).getStatusToGo());
+        }
+
+        System.out.println("Choose a target: ");
+        int value = IO.inputInt();
+        if(value-1 < BattleSystem.characterList.size()+1 && value > 0) {
+            if(BattleSystem.characterList.get(value - 1).getStatusToGo() == Character.Status.DEAD || BattleSystem.characterList.get(value - 1).getStatusToGo() == Character.Status.FLEE)
+            {
+                System.out.println("Target can't be attack.");
+                return findTarget();
+            }
+            return BattleSystem.characterList.get(value-1);
+        }
+        else {
+            System.out.println("Please choose within the limits!");
+            return findTarget();
+        }
+    }
+
+    public static void choicesMove(Character player) {
+        nameHeader(player);
+        System.out.println("1. Attack");
+        System.out.println("2. Spell");
+        System.out.println("3. Inventory");
+        System.out.println("4. Run");
+        System.out.println("Choose your move: ");
+
+        switch (IO.inputInt())
+        {
+            case 1:                     //Will call the normal attack function
+                player.attack(findTarget());
+                break;
+            case 2:                     //Will call the spell attack function base off the jobType.
+                player.getJobtype().spell(player);
+                break;
+            case 3:                     //Inventory System later on
+                break;
+            case 4:                     //Run function
+                player.run();
+                break;
+            default:
+                System.out.println("Please choose within the limit of 1-4 ");
+                choicesMove(player);          //Continuous loop if the right press is not correct.
+        }
+    }
+
+    public static void announceStats(Character player)         //Display attribute
+    {
+        player.updateValue();
+        player.findingHealth();
+        System.out.println(player.getName() + " Attributes:");
+        System.out.println("Strength: " + player.getAttribute().getStrength());
+        System.out.println("Intellect: " + player.getAttribute().getIntellect());
+        System.out.println("Agility: " + player.getAttribute().getAgility());
+        System.out.println("Stamina: " + player.getAttribute().getStamina());
+        System.out.println("Critical Strike: " + String.format("%.2f", player.getAttribute().getCrit()));
+        System.out.println("Haste: " + String.format("%.2f", player.getAttribute().getHaste()));
+        System.out.println("Health: " + player.getHealth());
+        System.out.println("Team: " + player.getTeam());
+        System.out.println("Role: " + player.getRole());
+        System.out.println("Type of Player: " + player.getPlayable());
+        System.out.println("\n\n");
+    }
+
+    public static void nameHeader(Character player)
+    {
+        IO.printHeaderName(player.getName() + " - " + player.getRole() +
+                " - (HEALTH: " + player.getHealth() + "/" + player.getMaxHealth() +
+                " | " + player.getJobtype().getResource() + ": " + player.getJobtype().getStartBar() + "/" + player.getJobtype().getMaxBar() + ")");
+    }
+
+    public static void damageLog(Character player,Character target, int damage)
+    {
+        System.out.println(target.getName() + " Health Pool is: " + target.getHealth());
+        if(player.getName() == target.getName())
+        {
+            System.out.println(player.getName() + " attack themselves out of confusion for: " + damage + " physical damage.");
+        }
+        else if(player.getTeam() == target.getTeam())
+        {
+            System.out.println(player.getName() + " has attack their teammate for: " + damage + " physical damage.");
+        }
+        else{System.out.println(player.getName() + " is attacking "  + target.getName() + " for " + damage + " physical damage.");}
+    }
+
+    public static void deathLog(Character target)
+    {
+        System.out.println(target.getName() + " has died");
+        target.setStatusToGo(Character.Status.DEAD);
     }
 }

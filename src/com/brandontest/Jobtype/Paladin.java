@@ -44,7 +44,6 @@ public class Paladin extends JobType
     {
         subResource(15);
         System.out.println(getResource() + ": " + getStartBar() + "/" + getMaxBar());
-
     }
 
     //Test function
@@ -58,18 +57,13 @@ public class Paladin extends JobType
             target.subHealth(damage);
             if(target.getHealth() <= 0)
             {
-                System.out.println(target.getName() + " has died");
-                target.turnEnd();
-                System.out.println(getResource() + ": " + getStartBar() + "/" + getMaxBar());
+                IO.deathLog(target);
             }
             System.out.println(player.getName() + " used Judgement on " + target.getName() + " for " + damage + " holy damage.");
             subResource(20);
-            System.out.println(getResource() + ": " + getStartBar() + "/" + getMaxBar());
-
         }else{
             System.out.println("Not enough mana");
             spell(player);
-
         }
     }
     @Override
@@ -84,7 +78,7 @@ public class Paladin extends JobType
         switch(IO.inputInt())
         {
             case 1:
-                judgement(player, player.findTarget());
+                judgement(player, IO.findTarget());
                 break;
             case 2:
                 holylight();
@@ -93,6 +87,5 @@ public class Paladin extends JobType
                 strike();
                 break;
         }
-
     }
 }

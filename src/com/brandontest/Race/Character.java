@@ -1,5 +1,6 @@
 package com.brandontest.Race;
 
+import com.brandontest.Controls.BattleSystem;
 import com.brandontest.Controls.IO;
 import com.brandontest.Jobtype.JobType;
 import com.brandontest.Jobtype.Paladin;
@@ -7,9 +8,6 @@ import com.brandontest.Jobtype.Warrior;
 import com.brandontest.Secondary.Attribute;
 import com.brandontest.Weapons.Weapon;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Random;
 
 /**
@@ -60,13 +58,6 @@ public abstract class Character
             return VALUES[RANDOM.nextInt(SIZE)];
         }
     }
-    /**public enum Choice
-    {
-        ATTACK,
-        SPELL,
-        INVENTORY,
-        RUN;
-    }*/
 
     public static enum Status{
         STUN,
@@ -75,8 +66,8 @@ public abstract class Character
         FLEE
     }
 
-    public static ArrayList<Character> characterList = new ArrayList<Character>();          //Character list that will be changing.
-    public static ArrayList<Character> tempList = new ArrayList<Character>();               //Character list that is temp and change if there is a change in characterList.
+    //public static ArrayList<Character> characterList = new ArrayList<Character>();          //Character list that will be changing.
+    //public static ArrayList<Character> tempList = new ArrayList<Character>();               //Character list that is temp and change if there is a change in characterList.
 
 
     //Composition of other classes
@@ -125,8 +116,6 @@ public abstract class Character
         {
             case GOOD :
                 break;
-            /*case NEUTRAL:
-                break;*/
             case BAD:
                 break;
         }
@@ -137,7 +126,7 @@ public abstract class Character
             case NPC:
                 break;
         }
-        characterList.add(this);
+        BattleSystem.characterList.add(this);
     }
     //Superclass when trying to generate randomly
     public Character(Role role, Weapon weapon, int level, String name, Team team, Type playable)
@@ -173,8 +162,6 @@ public abstract class Character
         {
             case GOOD :
                 break;
-            /*case NEUTRAL:
-                break;*/
             case BAD:
                 break;
             default:
@@ -187,9 +174,7 @@ public abstract class Character
                 break;
             default:
         }
-
-
-        characterList.add(this);
+        BattleSystem.characterList.add(this);
     }
 
     //Getter Functions
@@ -258,6 +243,10 @@ public abstract class Character
     {
         this.maxHealth = health;
     }
+    public void setStatusToGo(Status status)
+    {
+        this.statusToGo = status;
+    }
 
     //Specialty Functions
     public Attribute statsCombine()     //Adding both JobType and Weapon attribute together
@@ -271,24 +260,7 @@ public abstract class Character
                 jobtype.getAttribute().getCrit() + weapon.getAttribute().getCrit());
 
     }
-    public void announceStats()         //Display attribute
-    {
-        updateValue();
-        findingHealth();
-        System.out.println(name + " Attributes:");
-        System.out.println("Strength: " + attribute.getStrength());
-        System.out.println("Intellect: " + attribute.getIntellect());
-        System.out.println("Agility: " + attribute.getAgility());
-        System.out.println("Stamina: " + attribute.getStamina());
-        System.out.println("Critical Strike: " + String.format("%.2f", attribute.getCrit()));
-        System.out.println("Haste: " + String.format("%.2f", attribute.getHaste()));
-        System.out.println("Health: " + getHealth());
-        System.out.println("Team: " + getTeam());
-        System.out.println("Role: " + getRole());
-        System.out.println("Type of Player: " + getPlayable());
-        System.out.println("\n\n");
 
-    }
     public void specialAttribute()      //Each race has a special attribute
     {
         System.out.println("My race has no special attribute");
@@ -311,148 +283,25 @@ public abstract class Character
         int max = weapon.getMaxDamage();
         int damage = (int) ((Math.random()*(max - min)+min)+str);
 
-        System.out.println(target.getName() + " Health Pool is: " + target.getHealth());
-        if(getName() == target.getName())
-        {
-            System.out.println(getName() + " attack themselves out of confusion for: " + damage + " physical damage.");
-        }
-        else if(getTeam() == target.getTeam())
-        {
-            System.out.println(getName() + " has attack their teammate for: " + damage + " physical damage.");
-        }
-        else{System.out.println(getName() + " is attacking "  + target.getName() + " for " + damage + " physical damage.");}
+        IO.damageLog(this, target, damage);
         target.subHealth(damage);
 
         if(role == Role.WARRIOR)
         {
             jobtype.addResource(5);
         }
-
         if(target.getHealth() <= 0)
         {
-            System.out.println(target.getName() + " has died");
-            target.turnEnd();
-            System.out.println(jobtype.getResource() + ": " + jobtype.getStartBar() + "/" + jobtype.getMaxBar());
+            IO.deathLog(target);
         }
         else System.out.println(target.getName() + " remaining health is: " + target.getHealth());
-        System.out.println(jobtype.getResource() + ": " + jobtype.getStartBar() + "/" + jobtype.getMaxBar());
-
     }
 
-    public void choicesMove() {
-        IO.printHeaderName(getName() + " - " + getRole() +
-                " - (HEALTH: " + getHealth() + "/" + getMaxHealth() +
-                " | " + jobtype.getResource() + ": " + jobtype.getStartBar() + "/" + jobtype.getMaxBar() + ")");
-        System.out.println("1. Attack");
-        System.out.println("2. Spell");
-        System.out.println("3. Inventory");
-        System.out.println("4. Run");
-        System.out.println("Choose your move: ");
-
-        switch (IO.inputInt())
-        {
-            case 1:                     //Will call the normal attack function
-                attack(findTarget());
-                break;
-            case 2:                     //Will call the spell attack function base off the jobType.
-                jobtype.spell(this);
-                break;
-            case 3:                     //Inventory System later on
-                break;
-            case 4:                     //Run function
-                run();
-                break;
-            default:
-                System.out.println("Please choose within the limit of 1-4 ");
-                choicesMove();          //Continuous loop if the right press is not correct.
-        }
-    }
-    public Character findTarget() {
-
-        IO.printHeader("Character List");
-        for(int i = 0; i < characterList.size(); i++)
-        {
-            System.out.println((i+1) + ". " + characterList.get(i).getName() + " = " + characterList.get(i).getTeam() + " - " + characterList.get(i).getStatusToGo());
-        }
-
-        System.out.println("Choose a target: ");
-        int value = IO.inputInt();
-        if(value < characterList.size()+1 && value > 0) {
-            if(characterList.get(value - 1).getStatusToGo() == Status.DEAD || characterList.get(value - 1).getStatusToGo() == Status.FLEE)
-                {
-                    System.out.println("Target can't be attack.");
-                    return findTarget();
-                }
-            return targetSystem(value);
-        }
-        else {
-            System.out.println("Please choose within the limits!");
-            return findTarget();
-        }
-    }
-    public Character targetSystem(int choice)
-    {
-        return characterList.get(choice-1);
-    }
 
     public void run() {
         System.out.println(getName() + " has flee");
         statusToGo = Status.FLEE;
     }
-    public static void descendingOrder(){
-        Collections.sort(Character.characterList, new Comparator<Character>() {
-            @Override
-            public int compare(Character o1, Character o2) {
-                return Double.valueOf(o2.getAttribute().getHaste()).compareTo(o1.getAttribute().getHaste());
-            }
-        });
-    }   //Function to sort it descending the arrayList via haste value
-    public static boolean checker() {                           //This function will be use to check to see if the game is over or not. This will depend if there are any more players on an opposing team.
-        int bad = 0;
-        int good = 0;
-
-        for(int i = 0; i < characterList.size(); i++)
-        {
-            if(characterList.get(i).getTeam() == Team.BAD)
-            {
-                bad++;
-            }
-            if(characterList.get(i).getTeam() == Team.GOOD)
-            {
-                good++;
-            }
-        }
-        if(good == 0 || bad == 0)
-        {
-            good = 0;
-            bad = 0;
-            return false;
-        }
-        else{
-            return true;
-        }
-    }
-    /**public void update() {                           //Function to compare the tempList to the characterList and if there are any changes, update the order of the players again.
-        if(characterList.size() != tempList.size())
-        {
-            descendingOrder();
-        }
-        else
-            System.out.println("There was no changes");
-    }
-    public static void listCopy()
-    {
-        tempList = (ArrayList<Character>)characterList.clone();
-    }       //Function copy the characterList to tempList.
-
-    public static boolean characterChecker() {      //Check to see if there is a difference between tempList and characterList to update or not.
-        if(characterList.size() != tempList.size())
-        {
-            listCopy();
-            return true;
-        }
-        else return false;
-    }*/
 
     //TODO: Create a weight system that will slow down the players haste.
 
@@ -472,13 +321,13 @@ public abstract class Character
         //TODO: Function to remove the buff or debuff from a character
     }
 
-    public void startTurn()
+    public void turnChecker()
     {
-        if(characterStatus() == Status.ALIVE)
+        if(characterStatus() == Character.Status.ALIVE)
         {
-            choicesMove();
+            IO.choicesMove(this);
         }
-        turnEnd();
+        BattleSystem.turnEnd(this);
     }
 
     public Status characterStatus()
@@ -488,25 +337,5 @@ public abstract class Character
             return getStatusToGo();
         }
         return getStatusToGo();
-    }
-
-    public void turnEnd()
-    {
-        if(getHealth() <= 0)
-        {
-            statusToGo = Status.DEAD;
-        }
-
-    }
-
-    public static void updateAfter()
-    {
-        for(int i = 0; i < characterList.size(); i++)
-        {
-            if(characterList.get(i).statusToGo == Status.FLEE)
-            characterList.remove(characterList.get(i));
-        }
-        descendingOrder();
-
     }
 }
