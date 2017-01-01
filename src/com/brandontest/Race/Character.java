@@ -6,7 +6,7 @@ import com.brandontest.Jobtype.JobType;
 import com.brandontest.Jobtype.Paladin;
 import com.brandontest.Jobtype.Warrior;
 import com.brandontest.Secondary.Attribute;
-import com.brandontest.Weapons.Weapon;
+import com.brandontest.Gear.Weapon;
 
 import java.util.Random;
 
@@ -15,7 +15,6 @@ import java.util.Random;
  */
 public abstract class Character
 {
-    private static final double strModifier = 1.20;
 
     public static enum Team
     {GOOD,
@@ -98,7 +97,7 @@ public abstract class Character
     }
 
     //Superclass when know a specific way
-    public Character(JobType jobType, Weapon weapon, int level, String name, Team team, Type playable)
+    public Character(JobType jobType, Weapon weapon, int level, String name, Team team, Type playable, Role role)
     {
         this.jobtype = jobType;
         this.weapon = weapon;
@@ -110,8 +109,18 @@ public abstract class Character
         this.playable = playable;
         this.attribute = statsCombine();
         this.statusToGo = Status.ALIVE;
+        this.role = role;
 
-
+        switch(this.role)
+        {
+            case PALADIN:
+                jobtype.setResourceType(this);
+                break;
+            case WARRIOR:
+                jobtype.setResourceType(this);
+                break;
+            default:
+        }
         switch (team)
         {
             case GOOD :
@@ -278,29 +287,7 @@ public abstract class Character
     }
 
     public void attack(Character target) {
-        int str = (int)(attribute.getStrength() * strModifier);
-        int min = weapon.getMinDamage();
-        int max = weapon.getMaxDamage();
-        int damage = (int) ((Math.random()*(max - min)+min)+str);
-
-        IO.damageLog(this, target, damage);
-        target.subHealth(damage);
-
-        if(role == Role.WARRIOR)
-        {
-            jobtype.addResource(5);
-        }
-        if(target.getHealth() <= 0)
-        {
-            IO.deathLog(target);
-        }
-        else System.out.println(target.getName() + " remaining health is: " + target.getHealth());
-    }
-
-
-    public void run() {
-        System.out.println(getName() + " has flee");
-        statusToGo = Status.FLEE;
+        BattleSystem.attackDamage(this,target);
     }
 
     //TODO: Create a weight system that will slow down the players haste.
@@ -321,11 +308,11 @@ public abstract class Character
         //TODO: Function to remove the buff or debuff from a character
     }
 
-    public void turnChecker()
+    public void canGo()
     {
         if(characterStatus() == Character.Status.ALIVE)
         {
-            IO.choicesMove(this);
+            IO.actionChoice(this);
         }
         BattleSystem.turnEnd(this);
     }

@@ -68,8 +68,19 @@ public class BattleSystem {
     {
         for(int i = 0; i < characterList.size(); i++)
         {
-            characterList.get(i).turnChecker();
+            characterList.get(i).canGo();
         }
         updateAfter();
+    }
+
+
+    public static void attackDamage(Character player, Character target)
+    {
+        int str = (int)(player.getAttribute().getStrength() * 2.8);
+        int min = player.getWeapon().getMinDamage();
+        int max = player.getWeapon().getMaxDamage();
+        int damage = (int) ((Math.random()*(max - min)+min)+str);
+        target.subHealth(damage);
+        IO.damageReport(player, target, damage);
     }
 }

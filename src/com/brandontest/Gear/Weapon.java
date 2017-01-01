@@ -1,4 +1,4 @@
-package com.brandontest.Weapons;
+package com.brandontest.Gear;
 
 import com.brandontest.Secondary.Attribute;
 

@@ -66,7 +66,7 @@ public abstract class JobType implements Ability {
     public void spell(Character player)
     {
         System.out.println("You do not have any spell");
-        IO.choicesMove(player);
+        IO.actionChoice(player);
     }
 
     public void addResource(int value)

@@ -69,11 +69,11 @@ public class IO
         }
     }
 
-    public static void choicesMove(Character player) {
+    public static void actionChoice(Character player) {
         nameHeader(player);
         System.out.println("1. Attack");
         System.out.println("2. Spell");
-        System.out.println("3. Inventory");
+        System.out.println("3. Gear");
         System.out.println("4. Run");
         System.out.println("Choose your move: ");
 
@@ -85,14 +85,14 @@ public class IO
             case 2:                     //Will call the spell attack function base off the jobType.
                 player.getJobtype().spell(player);
                 break;
-            case 3:                     //Inventory System later on
+            case 3:                     //Gear System later on
                 break;
             case 4:                     //Run function
-                player.run();
+                run(player);
                 break;
             default:
                 System.out.println("Please choose within the limit of 1-4 ");
-                choicesMove(player);          //Continuous loop if the right press is not correct.
+                actionChoice(player);          //Continuous loop if the right press is not correct.
         }
     }
 
@@ -121,7 +121,7 @@ public class IO
                 " | " + player.getJobtype().getResource() + ": " + player.getJobtype().getStartBar() + "/" + player.getJobtype().getMaxBar() + ")");
     }
 
-    public static void damageLog(Character player,Character target, int damage)
+    public static void damageReport(Character player, Character target, int damage)
     {
         System.out.println(target.getName() + " Health Pool is: " + target.getHealth());
         if(player.getName() == target.getName())
@@ -133,11 +133,26 @@ public class IO
             System.out.println(player.getName() + " has attack their teammate for: " + damage + " physical damage.");
         }
         else{System.out.println(player.getName() + " is attacking "  + target.getName() + " for " + damage + " physical damage.");}
+
+        if(player.getRole() == Character.Role.WARRIOR)
+        {
+            player.getJobtype().addResource(5);
+        }
+        if(target.getHealth() <= 0)
+        {
+            IO.deathLog(target);
+        }
+        else System.out.println(target.getName() + " remaining health is: " + target.getHealth());
     }
 
     public static void deathLog(Character target)
     {
         System.out.println(target.getName() + " has died");
         target.setStatusToGo(Character.Status.DEAD);
+    }
+
+    public static void run(Character player) {
+        System.out.println(player.getName() + " has flee");
+        player.setStatusToGo(Character.Status.FLEE);
     }
 }

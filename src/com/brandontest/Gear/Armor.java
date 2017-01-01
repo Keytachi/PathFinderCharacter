@@ -1,4 +1,4 @@
-package com.brandontest.Weapons;
+package com.brandontest.Gear;
 
 /**
  * Created by Brandon on 12/27/2016.

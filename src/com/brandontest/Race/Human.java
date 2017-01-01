@@ -1,7 +1,7 @@
 package com.brandontest.Race;
 
 import com.brandontest.Jobtype.JobType;
-import com.brandontest.Weapons.Weapon;
+import com.brandontest.Gear.Weapon;
 
 /**
  * Created by Brandon on 12/22/2016.
@@ -15,8 +15,8 @@ public class Human extends Character
         race = "Human";
         this.critModifier = .05;
     }
-    public Human(JobType jobtype, Weapon weapon,int level,String name, Team team, Type playable) {
-        super(jobtype, weapon, level, name, team, playable);
+    public Human(JobType jobtype, Weapon weapon,int level,String name, Team team, Type playable, Role role) {
+        super(jobtype, weapon, level, name, team, playable, role);
         race = "Human";
         this.critModifier = .05;
     }
